@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/passtival?useSSL=false&allowPublicKeyRetrieval=true
-    username: pathfinder
-    password: pathFinderPw1234!@#$
+    username:
+    password:
 
   jpa:
     hibernate:
@@ -23,5 +23,5 @@ logging:
     org.hibernate.SQL: debug
 
 file:
-  item_img-storage-location: /Users/kmo/Study/toy-project/spring-shop/project/spring-shop-front/storage/images/item
+  item_img-storage-location: /Users/kmo/Study/toy-project/spring-shop/spring-shop-front/storage/images/item
 
