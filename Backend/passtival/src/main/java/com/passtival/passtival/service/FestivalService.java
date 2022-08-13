@@ -146,6 +146,7 @@ public class FestivalService {
      */
     public FestivalDetailDto getFestivalDetail(Long festivalId) {
         Festival festival = festivalRepository.findById(festivalId).get();
+        FestivalImage festivalImage = festivalImageRepository.findByFestival(festival);
 
 
         return FestivalDetailDto.builder()
@@ -159,6 +160,50 @@ public class FestivalService {
                 .month(festival.getMonth())
                 .city(festival.getCity())
                 .isFree(festival.getIsFree())
+                .imgUrl(festivalImage.getImgUrl())
                 .build();
+    }
+
+    /**
+     * 모든 행사를 조회하는 비즈니스
+     * @return
+     */
+    public List<FestivalPreviewDto> getAllFestival() {
+        List<Festival> results = festivalRepository.findAll();
+        List<FestivalPreviewDto> list = new ArrayList<>();
+
+        for (Festival festival : results) {
+            FestivalImage festivalImage = festivalImageRepository.findByFestival(festival);
+            list.add(
+                    FestivalPreviewDto.builder()
+                            .festivalId(festival.getId())
+                            .festivalName(festival.getTitle())
+                            .imgUrl(festivalImage.getImgUrl())
+                            .build()
+            );
+
+        }
+
+        return list;
+    }
+
+    public List<FestivalPreviewDto> getPickFestival() {
+        List<Festival> results = festivalRepository.findAll();
+        List<FestivalPreviewDto> list = new ArrayList<>();
+
+        for (Festival festival : results) {
+            if (festival.getId() % 2 != 0 && festival.getIsFree() == true) {
+                FestivalImage festivalImage = festivalImageRepository.findByFestival(festival);
+                list.add(
+                        FestivalPreviewDto.builder()
+                                .festivalId(festival.getId())
+                                .festivalName(festival.getTitle())
+                                .imgUrl(festivalImage.getImgUrl())
+                                .build()
+                );
+            }
+        }
+
+        return list;
     }
 }

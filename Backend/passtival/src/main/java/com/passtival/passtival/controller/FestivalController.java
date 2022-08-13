@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 public class FestivalController {
@@ -123,6 +124,34 @@ public class FestivalController {
                 HttpStatus.OK.value(),
                 "성공적으로 조회하였습니다.",
                 festivalDetail
+        );
+    }
+
+    /**
+     * 저장된 행사 전체 조회
+     */
+    @GetMapping("/api/festivals")
+    public ListResult<FestivalPreviewDto> getAllFestival() {
+        List<FestivalPreviewDto> allFestival = festivalService.getAllFestival();
+
+        return responseService.getListResult(
+                HttpStatus.OK.value(),
+                "성공적으로 검색하였습니다.",
+                allFestival
+        );
+    }
+
+    /**
+     * 추천 행사 조회
+     */
+    @GetMapping("/api/festival/pick")
+    public ListResult<FestivalPreviewDto> getPickFestival() {
+        List<FestivalPreviewDto> allFestival = festivalService.getPickFestival();
+
+        return responseService.getListResult(
+                HttpStatus.OK.value(),
+                "성공적으로 추천 검색하였습니다.",
+                allFestival
         );
     }
 }

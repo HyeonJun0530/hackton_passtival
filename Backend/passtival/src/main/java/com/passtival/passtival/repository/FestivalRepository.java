@@ -11,4 +11,5 @@ public interface FestivalRepository extends JpaRepository<Festival, Long>,
         QuerydslPredicateExecutor<Festival>, FestivalRepositoryCustom {
 
     List<Festival> findAllByStatus(FestivalStatus status);
+
 }

@@ -30,8 +30,10 @@ public class FestivalDetailDto {
 
     private Boolean isFree;
 
+    private String imgUrl;
+
     @Builder
-    public FestivalDetailDto(Long festivalId, String title, String host, String location, String date, String content, FestivalStatus status, FestivalMonth month, FestivalCity city, Boolean isFree) {
+    public FestivalDetailDto(Long festivalId, String title, String host, String location, String date, String content, FestivalStatus status, FestivalMonth month, FestivalCity city, Boolean isFree, String imgUrl) {
         this.festivalId = festivalId;
         this.title = title;
         this.host = host;
@@ -42,5 +44,6 @@ public class FestivalDetailDto {
         this.month = month;
         this.city = city;
         this.isFree = isFree;
+        this.imgUrl = imgUrl;
     }
 }
