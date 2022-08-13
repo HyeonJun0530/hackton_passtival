@@ -2,16 +2,14 @@ package com.passtival.passtival.repository;
 
 import com.passtival.passtival.constant.FestivalCity;
 import com.passtival.passtival.constant.FestivalMonth;
-import com.passtival.passtival.constant.FestivalStatus;
+import com.passtival.passtival.domain.Festival;
 import com.passtival.passtival.domain.QFestival;
-import com.passtival.passtival.dto.FestivalMainPageDto;
 import com.passtival.passtival.dto.FestivalSearchDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class FestivalRepositoryCustomImpl implements FestivalRepositoryCustom {
 
@@ -22,10 +20,10 @@ public class FestivalRepositoryCustomImpl implements FestivalRepositoryCustom {
     }
 
     /**
-     * 행사 진행 상태로 검색
+     * 행사 진행 유/무료 구분
      */
-    private BooleanExpression searchFestivalStatusEq(FestivalStatus festivalStatus) {
-        return festivalStatus == null ? null : QFestival.festival.status.eq(festivalStatus);
+    private BooleanExpression searchIsFreeEq(Boolean isFree) {
+        return isFree == null ? null : QFestival.festival.isFree.eq(isFree);
     }
 
     /**
@@ -43,22 +41,19 @@ public class FestivalRepositoryCustomImpl implements FestivalRepositoryCustom {
     }
 
     @Override
-    public Page<FestivalMainPageDto> getFestivalMainPage(FestivalSearchDto festivalSearchDto, Pageable pageable) {
+    public List<Festival> getSearchPage(FestivalSearchDto festivalSearchDto) {
+        List<Festival> results = queryFactory
+                .selectFrom(QFestival.festival)
+                .where(
+                        searchIsFreeEq(festivalSearchDto.getIsFree()),
+                        searchFestivalMonthEq(festivalSearchDto.getMonth()),
+                        searchFestivalCityEq(festivalSearchDto.getCity())
 
-//        QFestival festival = QFestival.festival;
-//        QFestivalImage festivalImage = QFestivalImage.festivalImage;
-//
-//        queryFactory.select(
-//                new QFestivalMainPageDto(
-//                        festival.id,
-//                        festival.title,
-//                        festivalImage.imgUrl)
-//        )
-//                        .from(festivalImage)
-//                .join(festivalImage.festival, festival)
-//                .where()
+                )
+                .orderBy(QFestival.festival.id.desc())
+                .fetch();
 
-
-        return null;
+        return results;
     }
+
 }

@@ -18,3 +18,4 @@ public class Hashtag extends BaseTimeEntity {
     @Column(length = 200, nullable = false)
     private String title;
 }
+

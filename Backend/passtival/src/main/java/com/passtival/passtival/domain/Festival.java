@@ -22,6 +22,9 @@ public class Festival extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String host;
 
+    @Column(length = 100, nullable = false)
+    private String location;
+
     @Column(length = 150, nullable = false)
     private String date;
 
@@ -44,9 +47,10 @@ public class Festival extends BaseTimeEntity {
     private Boolean isFree;
 
     @Builder
-    public Festival(String title, String host, String date, String content, FestivalStatus status, FestivalMonth month, FestivalCity city, Boolean isFree) {
+    public Festival(String title, String host, String location, String date, String content, FestivalStatus status, FestivalMonth month, FestivalCity city, Boolean isFree) {
         this.title = title;
         this.host = host;
+        this.location = location;
         this.date = date;
         this.content = content;
         this.status = status;

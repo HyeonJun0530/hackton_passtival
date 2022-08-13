@@ -4,8 +4,9 @@ import com.passtival.passtival.constant.FestivalStatus;
 import com.passtival.passtival.domain.Festival;
 import com.passtival.passtival.domain.FestivalImage;
 import com.passtival.passtival.dto.CreateFestivalDto;
-import com.passtival.passtival.dto.CreateFestivalImageResponseDto;
-import com.passtival.passtival.dto.FestivalMainPageDto;
+import com.passtival.passtival.dto.FestivalDetailDto;
+import com.passtival.passtival.dto.FestivalPreviewDto;
+import com.passtival.passtival.dto.FestivalSearchDto;
 import com.passtival.passtival.repository.FestivalImageRepository;
 import com.passtival.passtival.repository.FestivalRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class FestivalService {
         Festival festival = Festival.builder()
                 .title(request.getTitle())
                 .host(request.getHost())
+                .location(request.getLocation())
                 .date(request.getDate())
                 .content(request.getContent())
                 .status(request.getStatus())
@@ -50,7 +52,7 @@ public class FestivalService {
      * 행사 이미지 등록 비즈니스
      */
     @Transactional
-    public CreateFestivalImageResponseDto saveFestivalImage(Long festivalId, List<MultipartFile> imageList) throws Exception {
+    public FestivalDetailDto saveFestivalImage(Long festivalId, List<MultipartFile> imageList) throws Exception {
         Optional<Festival> festival = festivalRepository.findById(festivalId);
 
         for (int i = 0; i < imageList.size(); i++) {
@@ -85,7 +87,7 @@ public class FestivalService {
             festivalImageRepository.save(festivalImage);
         }
 
-        return CreateFestivalImageResponseDto.builder()
+        return FestivalDetailDto.builder()
                 .festivalId(festival.get().getId())
                 .build();
     }
@@ -99,14 +101,14 @@ public class FestivalService {
      * 메인 페이지에 보여질 행사 리스트 정보를 반환하는 비즈니스
      * 행사 상태
      */
-    public List<FestivalMainPageDto> getFestivalMainByStatus(FestivalStatus status) {
+    public List<FestivalPreviewDto> getFestivalMainByStatus(FestivalStatus status) {
         List<Festival> festivals = festivalRepository.findAllByStatus(status);
-        List<FestivalMainPageDto> mainPageDtos = new ArrayList<>();
+        List<FestivalPreviewDto> mainPageDtos = new ArrayList<>();
 
         for (Festival festival : festivals) {
             FestivalImage festivalImage = festivalImageRepository.findByFestival(festival);
             mainPageDtos.add(
-                    FestivalMainPageDto.builder()
+                    FestivalPreviewDto.builder()
                             .festivalId(festival.getId())
                             .festivalName(festival.getTitle())
                             .imgUrl(festivalImage.getImgUrl())
@@ -115,5 +117,48 @@ public class FestivalService {
         }
 
         return mainPageDtos;
+    }
+
+    /**
+     * 상세 검색 페이지에 보여질 행사 리스트 정보를 반환하는 비즈니스
+     * 행사 유/무료 여부 & 개최 구 & 개최 달
+     */
+    public List<FestivalPreviewDto> getFestivalSearch(FestivalSearchDto festivalSearchDto) {
+        List<Festival> festivalList = festivalRepository.getSearchPage(festivalSearchDto);
+        List<FestivalPreviewDto> previewDtos = new ArrayList<>();
+
+        for (Festival festival : festivalList) {
+            FestivalImage festivalImage = festivalImageRepository.findByFestival(festival);
+            previewDtos.add(
+                    FestivalPreviewDto.builder()
+                            .festivalId(festival.getId())
+                            .festivalName(festival.getTitle())
+                            .imgUrl(festivalImage.getImgUrl())
+                            .build()
+            );
+        }
+
+        return previewDtos;
+    }
+
+    /**
+     * 특정 행사 상세 정보 조회
+     */
+    public FestivalDetailDto getFestivalDetail(Long festivalId) {
+        Festival festival = festivalRepository.findById(festivalId).get();
+
+
+        return FestivalDetailDto.builder()
+                .festivalId(festival.getId())
+                .title(festival.getTitle())
+                .host(festival.getHost())
+                .location(festival.getLocation())
+                .date(festival.getDate())
+                .content(festival.getContent())
+                .status(festival.getStatus())
+                .month(festival.getMonth())
+                .city(festival.getCity())
+                .isFree(festival.getIsFree())
+                .build();
     }
 }

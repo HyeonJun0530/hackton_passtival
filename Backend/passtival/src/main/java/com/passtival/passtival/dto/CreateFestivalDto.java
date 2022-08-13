@@ -21,6 +21,9 @@ public class CreateFestivalDto {
         private String host;
 
         @NotNull
+        private String location;
+
+        @NotNull
         private String date;
 
         @NotNull

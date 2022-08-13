@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class FestivalMainPageDto {
+public class FestivalPreviewDto {
     private Long festivalId;
 
     private String festivalName;
@@ -14,7 +14,7 @@ public class FestivalMainPageDto {
     private String imgUrl;
 
     @Builder
-    public FestivalMainPageDto(Long festivalId, String festivalName, String imgUrl) {
+    public FestivalPreviewDto(Long festivalId, String festivalName, String imgUrl) {
         this.festivalId = festivalId;
         this.festivalName = festivalName;
         this.imgUrl = imgUrl;
