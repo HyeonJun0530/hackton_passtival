@@ -1,5 +1,6 @@
 package com.passtival.passtival.domain;
 
+import com.passtival.passtival.config.audit.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,28 +14,25 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class Image {
+public class Image extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Id @GeneratedValue(strategy = IDENTITY)
-    private Long festival_id;
-
     @Column(length = 200, nullable = false)
-    private String original_title;
+    private String originalTitle;
 
-    @Column(length = 255, nullable = false)
-    private String stored_title;
+    @Column(nullable = false)
+    private String storedTitle;
 
     @Column(length = 500, nullable = false)
-    private String img_url;
+    private String imgUrl;
 
     //유,무료
     @Column(nullable = false)
-    private boolean is_free;
+    private Boolean isFree;
 
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Festival festivalId;
 
 }
