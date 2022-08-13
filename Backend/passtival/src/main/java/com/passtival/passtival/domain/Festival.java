@@ -4,16 +4,12 @@ import com.passtival.passtival.config.audit.BaseTimeEntity;
 import com.passtival.passtival.constant.FestivalCity;
 import com.passtival.passtival.constant.FestivalMonth;
 import com.passtival.passtival.constant.FestivalStatus;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
 public class Festival extends BaseTimeEntity {
 
@@ -47,4 +43,15 @@ public class Festival extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean isFree;
 
+    @Builder
+    public Festival(String title, String host, String date, String content, FestivalStatus status, FestivalMonth month, FestivalCity city, Boolean isFree) {
+        this.title = title;
+        this.host = host;
+        this.date = date;
+        this.content = content;
+        this.status = status;
+        this.month = month;
+        this.city = city;
+        this.isFree = isFree;
+    }
 }
