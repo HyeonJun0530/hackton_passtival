@@ -17,11 +17,9 @@ public class FestivalHashtag extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
     private Festival festivalId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
     private Hashtag hashtagId;
 
 }

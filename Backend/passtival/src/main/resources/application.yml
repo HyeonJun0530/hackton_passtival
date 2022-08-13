@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/passtival?useSSL=false&allowPublicKeyRetrieval=true
+    username: pathfinder
+    password: pathFinderPw1234!@#$
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 100MB
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+file:
+  item_img-storage-location: /Users/kmo/Study/toy-project/spring-shop/project/spring-shop-front/storage/images/item
+
